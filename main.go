@@ -11,25 +11,30 @@ type Cache interface {
 
 var _ Cache = (*cacheImpl)(nil)
 
-// Доработает конструктор и методы кеша, так чтобы они соответствовали интерфейсу Cache
 func newCacheImpl() *cacheImpl {
-	return &cacheImpl{}
+	return &cacheImpl{
+		data: make(map[string]string),
+	}
 }
 
 type cacheImpl struct {
+	data map[string]string
 }
 
 func (c *cacheImpl) Get(k string) (string, bool) {
-	// TODO implement me
-	return "", false
+	v, ok := c.data[k]
+	return v, ok
 }
 
 func (c *cacheImpl) Set(k, v string) {
-	// TODO implement me
+	c.data[k] = v
 }
 
 func newDbImpl(cache Cache) *dbImpl {
-	return &dbImpl{cache: cache, dbs: map[string]string{"hello": "world", "test": "test"}}
+	return &dbImpl{
+		cache: cache,
+		dbs:   map[string]string{"hello": "world", "test": "test"},
+	}
 }
 
 type dbImpl struct {
